@@ -1,0 +1,7 @@
+.build
+DockerWatch.xcodeproj
+.idea
+.git*
+.editorconfig
+docker-api-1.37.paw
+

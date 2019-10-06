@@ -1,0 +1,14 @@
+# Docker Watch example config
+
+containers:
+  - project_app1
+  - project_app2
+
+display:
+  remove_prefix: true
+  prefix_end: "_" # removes project_ from cli logs
+  emojis: true
+  colors: true
+
+filter:
+  - DEBUG # removes all log messages containing "DEBUG". RegEx not supported yet
