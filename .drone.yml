@@ -1,0 +1,46 @@
+kind: pipeline
+type: docker
+name: release build
+
+steps:
+  - name: test
+    image: alpine/git
+    commands:
+      - git diff --check
+
+  - name: docker
+    image: plugins/docker
+    settings:
+      repo: matrb/docker-watch
+      auto_tag: true
+      username:
+        from_secret: DOCKER_HUB_USER
+      password:
+        from_secret: DOCKER_HUB_TOKEN
+      build_args:
+        - CONFIG=release
+
+  - name: build linux binary
+    image: swift:5.1
+    commands:
+      - apt-get update && apt-get install -y libssl-dev zlib1g-dev
+      - swift build -c release --static-swift-stdlib
+
+  - name: publish to github
+    image: plugins/github-release
+    settings:
+      api_key:
+        from_secret: GITLAB_TOKEN
+      files:
+        - ./.build/release/docker-watch
+      checksum:
+        - md5
+        - sha1
+        - sha256
+        - sha512
+    when:
+      event: tag
+
+trigger:
+  branch:
+    - master
