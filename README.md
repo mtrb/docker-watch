@@ -1,4 +1,6 @@
-# docker-watch
+[![Build Status](https://cloud.drone.io/api/badges/mtrb/docker-watch/status.svg)](https://cloud.drone.io/mtrb/docker-watch)
+
+# docker-watch 
 
 Watch docker container events and logs in a docker-compose style
 
@@ -33,31 +35,6 @@ Watch docker container events and logs in a docker-compose style
     🛢  | 🗑  | application  |
     🛢  | 🗑  | database     |
 
-## Build
-
-### Dependencies
-
-Since the application uses  [`SwiftNIO SSL 1.4.x`](https://github.com/apple/swift-nio-ssl/tree/nio-ssl-1.4) libssl is needed.
-For Darwin (iOS, macOS, tvOS, ...):
-
-    brew install libressl
-
-For Linux see the Dockerfile
-
-### macOS
-
-Release with Swift stdlib linked statically
-
-    swift build -c release --static-swift-stdlib
-
-Build and run for debugging
-
-    swift run docker-watch
-
-### LINUX Docker image
-
-    docker image build -t docker-watch .
-
 ## Usage
 
 **Note on Linux:** Since the [bug SR-648](https://bugs.swift.org/browse/SR-648) is not fixed completely the libFoundation is not linked statically and causes the error 
@@ -82,13 +59,39 @@ Build and run for debugging
 
 ### Run docker-watch
 
-Binary:
+Run the Binary:
 
     docker-watch
         
-Docker image:
+Or use the [Docker image](https://hub.docker.com/r/matrb/docker-watch):
     
     docker container run -it --rm \
         -v /var/run/docker.sock:/var/run/docker.sock \
-        -v `pwd`/docker-watch.yml:/docker-watch.yml docker-watch
-        
+        -v `pwd`/docker-watch.yml:/docker-watch.yml \
+        matrb/docker-watch
+
+
+## Build
+
+### Dependencies
+
+Since the application uses  [`SwiftNIO SSL 1.4.x`](https://github.com/apple/swift-nio-ssl/tree/nio-ssl-1.4) libssl is needed.
+For Darwin (iOS, macOS, tvOS, ...):
+
+    brew install libressl
+
+For Linux see the Dockerfile
+
+### macOS
+
+Release with Swift stdlib linked statically
+
+    swift build -c release --static-swift-stdlib
+
+Build and run for debugging
+
+    swift run docker-watch
+
+### LINUX Docker image
+
+    docker image build -t docker-watch .
